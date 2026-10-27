@@ -1,0 +1,50 @@
++ cc kern/init/entry.S
++ cc kern/init/init.c
++ cc kern/libs/stdio.c
++ cc kern/debug/panic.c
++ cc kern/driver/console.c
++ cc kern/driver/dtb.c
++ cc kern/mm/best_fit_pmm.c
++ cc kern/mm/buddy_pmm.c
++ cc kern/mm/default_pmm.c
++ cc kern/mm/pmm.c
++ cc kern/mm/slub.c
++ cc libs/printfmt.c
++ cc libs/readline.c
++ cc libs/sbi.c
++ cc libs/string.c
++ ld bin/kernel
+riscv64-unknown-elf-objcopy bin/kernel --strip-all -O binary bin/ucore.img
+The target architecture is set to "riscv:rv64".
+0x0000000000001000 in ?? ()
+Hardware assisted breakpoint 1 at 0x80200000
+
+Breakpoint 1, 0x0000000080200000 in ?? ()
+BEFORE paging: pc=0x80200000 satp=0
+=> 0x80200000:	auipc	t0,0x7
+   0x80200004:	mv	t0,t0
+   0x80200008:	sd	a0,0(t0)
+Hardware assisted breakpoint 2 at 0xffffffffc02000d6: file kern/init/init.c, line 30.
+
+Breakpoint 2, kern_init () at kern/init/init.c:30
+30	    memset(edata, 0, end - edata);
+AFTER paging: pc=0xffffffffc02000d6 satp=0x8000000000080206
+ROOT va=0xffffffffc0206000 pa=0x80206000
+TRANSLATION va=0xffffffffc02000d6 vpn2=511 pte=0x200000cf pa=0x802000d6
+Root identity entry[2]:
+0xffffffffc0206010:	0x00000000200000cf
+Root high entry[511]:
+0xffffffffc0206ff8:	0x00000000200000cf
+Instruction at virtual PC and identity alias:
+=> 0xffffffffc02000d6 <kern_init>:	auipc	a0,0x7
+   0x802000d6:	auipc	a0,0x7
+[GDB] Sv39 root leaf translation: PASS
+Temporary breakpoint 3 at 0xffffffffc02000ec: file kern/init/init.c, line 28.
+
+Temporary breakpoint 3, 0xffffffffc02000ec in kern_init () at kern/init/init.c:28
+28	int kern_init(void) {
+STORE sd	ra,8(sp) at pc=0xffffffffc02000ec: va=0xffffffffc0205ff8 pte=0x200000cf pa=0x80205ff8 value=0x8000ae9a
+0xffffffffc02000ee	30	    memset(edata, 0, end - edata);
+[GDB] sd effective address and stored physical bytes: PASS
+[Inferior 1 (process 1) detached]
+
